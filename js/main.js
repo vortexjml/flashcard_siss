@@ -188,28 +188,34 @@ function showDeckDetail(deckId) {
 // 카드 리스트 렌더링
 // =====================================
 function renderCardList(deck) {
-    const container = document.getElementById("card-list");
+  const container = document.getElementById("card-list");
 
-    if (deck.cards.length === 0) {
-        container.innerHTML = `
+  if (deck.cards.length === 0) {
+    container.innerHTML = `
       <div class="empty-state">
         <p>아직 카드가 없어요.</p>
         <p>+ 버튼으로 카드를 추가해보세요.</p>
       </div>
     `;
-        return;
-    }
+    return;
+  }
 
-    container.innerHTML = deck.cards
-        .map(
-            (card) => `
+  container.innerHTML = deck.cards
+    .map((card) => {
+      const total = card.correctCount + card.incorrectCount;
+      const statsHtml = total > 0
+        ? `<p class="card-list-item__stats">✓ ${card.correctCount} · ✗ ${card.incorrectCount}</p>`
+        : "";
+
+      return `
         <article class="card-list-item" data-card-id="${card.id}">
           <p class="card-list-item__front">${escapeHtml(card.front)}</p>
           <p class="card-list-item__back">${escapeHtml(card.back)}</p>
+          ${statsHtml}
         </article>
-      `
-        )
-        .join("");
+      `;
+    })
+    .join("");
 }
 
 // =====================================
@@ -522,6 +528,43 @@ document.getElementById("btn-restart-study")
     .addEventListener("click", () => startStudy(studyState.deckId));
 document.getElementById("btn-back-from-result")
     .addEventListener("click", () => showDeckDetail(studyState.deckId));
+
+// =====================================
+// 학습 모드 키보드 단축키
+// =====================================
+function handleStudyKeyboard(e) {
+  // 학습 화면이 아니면 무시
+  if (document.getElementById("view-study").hidden) return;
+
+  // 입력창에 포커스 있을 때는 무시 (혹시 모를 충돌 방지)
+  const tag = e.target.tagName;
+  if (tag === "TEXTAREA" || tag === "INPUT") return;
+
+  // ESC: 학습 종료
+  if (e.key === "Escape") {
+    endStudyEarly();
+    return;
+  }
+
+  if (!studyState.isFlipped) {
+    // 앞면 상태: Space 또는 Enter로 뒤집기
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault(); // Space가 페이지 스크롤 시키는 것 방지
+      flipCard();
+    }
+  } else {
+    // 뒷면 상태: 1=모르겠어요, 2=알아요
+    if (e.key === "1") {
+      e.preventDefault();
+      answerCard(false);
+    } else if (e.key === "2") {
+      e.preventDefault();
+      answerCard(true);
+    }
+  }
+}
+
+document.addEventListener("keydown", handleStudyKeyboard);
 
 // =====================================
 // 앱 초기화
