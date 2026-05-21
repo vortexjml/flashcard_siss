@@ -263,9 +263,13 @@ body {
 
 .form-actions {
   display: flex;
-  justify-content: flex-end;
   gap: var(--space-3);
   margin-top: var(--space-2);
+}
+
+/* 저장 버튼은 항상 오른쪽 끝에 배치 */
+.form-actions > button[type="submit"] {
+  margin-left: auto;
 }
 
 /* ===== 일반 버튼 ===== */
@@ -294,4 +298,17 @@ body {
 .btn-primary:hover {
   background-color: var(--color-accent-hover);
   border-color: var(--color-accent-hover);
+}
+
+/* ===== 위험 버튼 (삭제 등) ===== */
+.btn-danger {
+  background-color: transparent;
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.btn-danger:hover {
+  background-color: var(--color-danger);
+  border-color: var(--color-danger);
+  color: white;
 }

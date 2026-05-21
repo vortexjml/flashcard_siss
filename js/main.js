@@ -172,44 +172,44 @@ function createNewDeck() {
 let currentDeckId = null; // 현재 보고 있는 덱
 
 function showDeckDetail(deckId) {
-  const data = loadData();
-  const deck = data.decks.find((d) => d.id === deckId);
-  if (!deck) return;
+    const data = loadData();
+    const deck = data.decks.find((d) => d.id === deckId);
+    if (!deck) return;
 
-  currentDeckId = deckId;
-  document.getElementById("deck-detail-name").textContent = deck.name;
-  document.getElementById("deck-detail-info").textContent =
-    `${deck.cards.length}장 · ${formatLastReviewed(deck.lastReviewed)}`;
+    currentDeckId = deckId;
+    document.getElementById("deck-detail-name").textContent = deck.name;
+    document.getElementById("deck-detail-info").textContent =
+        `${deck.cards.length}장 · ${formatLastReviewed(deck.lastReviewed)}`;
 
-  renderCardList(deck);
-  showView("view-deck");
+    renderCardList(deck);
+    showView("view-deck");
 }
 // =====================================
 // 카드 리스트 렌더링
 // =====================================
 function renderCardList(deck) {
-  const container = document.getElementById("card-list");
+    const container = document.getElementById("card-list");
 
-  if (deck.cards.length === 0) {
-    container.innerHTML = `
+    if (deck.cards.length === 0) {
+        container.innerHTML = `
       <div class="empty-state">
         <p>아직 카드가 없어요.</p>
         <p>+ 버튼으로 카드를 추가해보세요.</p>
       </div>
     `;
-    return;
-  }
+        return;
+    }
 
-  container.innerHTML = deck.cards
-    .map(
-      (card) => `
+    container.innerHTML = deck.cards
+        .map(
+            (card) => `
         <article class="card-list-item" data-card-id="${card.id}">
           <p class="card-list-item__front">${escapeHtml(card.front)}</p>
           <p class="card-list-item__back">${escapeHtml(card.back)}</p>
         </article>
       `
-    )
-    .join("");
+        )
+        .join("");
 }
 
 // =====================================
@@ -219,69 +219,90 @@ function renderCardList(deck) {
 let editingCardId = null;
 
 function showCardEditView(cardId = null) {
-  editingCardId = cardId;
+    editingCardId = cardId;
 
-  const titleEl = document.getElementById("card-edit-title");
-  const frontInput = document.getElementById("input-front");
-  const backInput = document.getElementById("input-back");
+    const titleEl = document.getElementById("card-edit-title");
+    const frontInput = document.getElementById("input-front");
+    const backInput = document.getElementById("input-back");
+    const deleteBtn = document.getElementById("btn-delete-card");
 
-  if (cardId) {
-    // 편집 모드: 기존 값 채우기
-    const data = loadData();
-    const deck = data.decks.find((d) => d.id === currentDeckId);
-    const card = deck.cards.find((c) => c.id === cardId);
-    if (!card) return;
+    if (cardId) {
+        const data = loadData();
+        const deck = data.decks.find((d) => d.id === currentDeckId);
+        const card = deck.cards.find((c) => c.id === cardId);
+        if (!card) return;
 
-    titleEl.textContent = "카드 편집";
-    frontInput.value = card.front;
-    backInput.value = card.back;
-  } else {
-    // 추가 모드: 빈 상태
-    titleEl.textContent = "카드 추가";
-    frontInput.value = "";
-    backInput.value = "";
-  }
+        titleEl.textContent = "카드 편집";
+        frontInput.value = card.front;
+        backInput.value = card.back;
+        deleteBtn.hidden = false; // 편집 모드 → 삭제 버튼 보이기
+    } else {
+        titleEl.textContent = "카드 추가";
+        frontInput.value = "";
+        backInput.value = "";
+        deleteBtn.hidden = true; // 추가 모드 → 삭제 버튼 숨기기
+    }
 
-  showView("view-card-edit");
-  frontInput.focus();
+    showView("view-card-edit");
+    frontInput.focus();
 }
 
 // =====================================
 // 카드 저장 (추가 또는 편집)
 // =====================================
 function saveCard(e) {
-  e.preventDefault(); // 폼 기본 동작 (새로고침) 막기
+    e.preventDefault(); // 폼 기본 동작 (새로고침) 막기
 
-  const front = document.getElementById("input-front").value.trim();
-  const back = document.getElementById("input-back").value.trim();
-  if (!front || !back) return;
+    const front = document.getElementById("input-front").value.trim();
+    const back = document.getElementById("input-back").value.trim();
+    if (!front || !back) return;
 
-  const data = loadData();
-  const deck = data.decks.find((d) => d.id === currentDeckId);
-  if (!deck) return;
+    const data = loadData();
+    const deck = data.decks.find((d) => d.id === currentDeckId);
+    if (!deck) return;
 
-  if (editingCardId) {
-    // 편집: 기존 카드 업데이트
-    const card = deck.cards.find((c) => c.id === editingCardId);
-    if (card) {
-      card.front = front;
-      card.back = back;
+    if (editingCardId) {
+        // 편집: 기존 카드 업데이트
+        const card = deck.cards.find((c) => c.id === editingCardId);
+        if (card) {
+            card.front = front;
+            card.back = back;
+        }
+    } else {
+        // 추가: 새 카드 push
+        const now = Date.now();
+        deck.cards.push({
+            id: "card_" + now,
+            front,
+            back,
+            correctCount: 0,
+            incorrectCount: 0,
+            lastReviewed: null,
+        });
     }
-  } else {
-    // 추가: 새 카드 push
-    const now = Date.now();
-    deck.cards.push({
-      id: "card_" + now,
-      front,
-      back,
-      correctCount: 0,
-      incorrectCount: 0,
-      lastReviewed: null,
-    });
-  }
 
-  saveData(data);
-  showDeckDetail(currentDeckId);
+    saveData(data);
+    showDeckDetail(currentDeckId);
+}
+
+// =====================================
+// 카드 삭제
+// =====================================
+function deleteCard() {
+    if (!editingCardId) return;
+
+    const confirmed = confirm("정말 이 카드를 삭제할까요?");
+    if (!confirmed) return;
+
+    const data = loadData();
+    const deck = data.decks.find((d) => d.id === currentDeckId);
+    if (!deck) return;
+
+    // 해당 ID를 제외한 카드들만 남기기
+    deck.cards = deck.cards.filter((c) => c.id !== editingCardId);
+
+    saveData(data);
+    showDeckDetail(currentDeckId);
 }
 
 // =====================================
@@ -304,22 +325,26 @@ document.getElementById("deck-list").addEventListener("click", (e) => {
 
 // 카드 추가 FAB → 새 카드 편집 화면
 document.getElementById("btn-add-card")
-  .addEventListener("click", () => showCardEditView());
+    .addEventListener("click", () => showCardEditView());
 
 // 편집 화면 취소 (← 버튼) → 덱 상세로
 document.getElementById("btn-cancel-edit")
-  .addEventListener("click", () => showDeckDetail(currentDeckId));
+    .addEventListener("click", () => showDeckDetail(currentDeckId));
 
 // 폼 제출 → 카드 저장
 document.getElementById("card-edit-form")
-  .addEventListener("submit", saveCard);
+    .addEventListener("submit", saveCard);
 
 // 카드 리스트에서 카드 클릭 → 편집 (이벤트 위임)
 document.getElementById("card-list").addEventListener("click", (e) => {
-  const item = e.target.closest(".card-list-item");
-  if (!item) return;
-  showCardEditView(item.dataset.cardId);
+    const item = e.target.closest(".card-list-item");
+    if (!item) return;
+    showCardEditView(item.dataset.cardId);
 });
+
+// 카드 삭제 버튼
+document.getElementById("btn-delete-card")
+    .addEventListener("click", deleteCard);
 
 // =====================================
 // 앱 초기화
