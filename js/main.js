@@ -72,6 +72,16 @@ function formatLastReviewed(timestamp) {
     if (diff < day) return "오늘";
     if (diff < 2 * day) return "어제";
     return Math.floor(diff / day) + "일 전";
+
+}
+
+// =====================================
+// 유틸: HTML 특수문자 이스케이프 (XSS 방지)
+// =====================================
+function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // =====================================
@@ -95,7 +105,7 @@ function renderHomeView() {
         .map(
             (deck) => `
         <article class="deck-card" data-deck-id="${deck.id}">
-          <h3 class="deck-card__name">${deck.name}</h3>
+          <h3 class="deck-card__name">${escapeHtml(deck.name)}</h3>
           <p class="deck-card__meta">
             ${deck.cards.length}장 · ${formatLastReviewed(deck.lastReviewed)}
           </p>
@@ -162,16 +172,116 @@ function createNewDeck() {
 let currentDeckId = null; // 현재 보고 있는 덱
 
 function showDeckDetail(deckId) {
+  const data = loadData();
+  const deck = data.decks.find((d) => d.id === deckId);
+  if (!deck) return;
+
+  currentDeckId = deckId;
+  document.getElementById("deck-detail-name").textContent = deck.name;
+  document.getElementById("deck-detail-info").textContent =
+    `${deck.cards.length}장 · ${formatLastReviewed(deck.lastReviewed)}`;
+
+  renderCardList(deck);
+  showView("view-deck");
+}
+// =====================================
+// 카드 리스트 렌더링
+// =====================================
+function renderCardList(deck) {
+  const container = document.getElementById("card-list");
+
+  if (deck.cards.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <p>아직 카드가 없어요.</p>
+        <p>+ 버튼으로 카드를 추가해보세요.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = deck.cards
+    .map(
+      (card) => `
+        <article class="card-list-item" data-card-id="${card.id}">
+          <p class="card-list-item__front">${escapeHtml(card.front)}</p>
+          <p class="card-list-item__back">${escapeHtml(card.back)}</p>
+        </article>
+      `
+    )
+    .join("");
+}
+
+// =====================================
+// 카드 편집 화면 표시
+// (cardId 없으면 새 카드 추가, 있으면 기존 카드 편집)
+// =====================================
+let editingCardId = null;
+
+function showCardEditView(cardId = null) {
+  editingCardId = cardId;
+
+  const titleEl = document.getElementById("card-edit-title");
+  const frontInput = document.getElementById("input-front");
+  const backInput = document.getElementById("input-back");
+
+  if (cardId) {
+    // 편집 모드: 기존 값 채우기
     const data = loadData();
-    const deck = data.decks.find((d) => d.id === deckId);
-    if (!deck) return;
+    const deck = data.decks.find((d) => d.id === currentDeckId);
+    const card = deck.cards.find((c) => c.id === cardId);
+    if (!card) return;
 
-    currentDeckId = deckId;
-    document.getElementById("deck-detail-name").textContent = deck.name;
-    document.getElementById("deck-detail-info").textContent =
-        `${deck.cards.length}장 · ${formatLastReviewed(deck.lastReviewed)}`;
+    titleEl.textContent = "카드 편집";
+    frontInput.value = card.front;
+    backInput.value = card.back;
+  } else {
+    // 추가 모드: 빈 상태
+    titleEl.textContent = "카드 추가";
+    frontInput.value = "";
+    backInput.value = "";
+  }
 
-    showView("view-deck");
+  showView("view-card-edit");
+  frontInput.focus();
+}
+
+// =====================================
+// 카드 저장 (추가 또는 편집)
+// =====================================
+function saveCard(e) {
+  e.preventDefault(); // 폼 기본 동작 (새로고침) 막기
+
+  const front = document.getElementById("input-front").value.trim();
+  const back = document.getElementById("input-back").value.trim();
+  if (!front || !back) return;
+
+  const data = loadData();
+  const deck = data.decks.find((d) => d.id === currentDeckId);
+  if (!deck) return;
+
+  if (editingCardId) {
+    // 편집: 기존 카드 업데이트
+    const card = deck.cards.find((c) => c.id === editingCardId);
+    if (card) {
+      card.front = front;
+      card.back = back;
+    }
+  } else {
+    // 추가: 새 카드 push
+    const now = Date.now();
+    deck.cards.push({
+      id: "card_" + now,
+      front,
+      back,
+      correctCount: 0,
+      incorrectCount: 0,
+      lastReviewed: null,
+    });
+  }
+
+  saveData(data);
+  showDeckDetail(currentDeckId);
 }
 
 // =====================================
@@ -190,6 +300,25 @@ document.getElementById("deck-list").addEventListener("click", (e) => {
     const card = e.target.closest(".deck-card");
     if (!card) return;
     showDeckDetail(card.dataset.deckId);
+});
+
+// 카드 추가 FAB → 새 카드 편집 화면
+document.getElementById("btn-add-card")
+  .addEventListener("click", () => showCardEditView());
+
+// 편집 화면 취소 (← 버튼) → 덱 상세로
+document.getElementById("btn-cancel-edit")
+  .addEventListener("click", () => showDeckDetail(currentDeckId));
+
+// 폼 제출 → 카드 저장
+document.getElementById("card-edit-form")
+  .addEventListener("submit", saveCard);
+
+// 카드 리스트에서 카드 클릭 → 편집 (이벤트 위임)
+document.getElementById("card-list").addEventListener("click", (e) => {
+  const item = e.target.closest(".card-list-item");
+  if (!item) return;
+  showCardEditView(item.dataset.cardId);
 });
 
 // =====================================

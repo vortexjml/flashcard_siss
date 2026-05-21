@@ -30,10 +30,33 @@
                 <h2 id="deck-detail-name"></h2>
             </div>
             <p id="deck-detail-info" class="text-muted"></p>
+
+            <div id="card-list" class="card-list"></div>
+
+            <button id="btn-add-card" class="fab" aria-label="카드 추가">+</button>
         </section>
 
         <section id="view-card-edit" hidden>
-            <h2>카드 편집</h2>
+            <div class="view-header">
+                <button id="btn-cancel-edit" class="icon-button" aria-label="취소">←</button>
+                <h2 id="card-edit-title">카드 추가</h2>
+            </div>
+
+            <form id="card-edit-form" class="card-form">
+                <label class="form-field">
+                    <span class="form-label">앞면 (질문)</span>
+                    <textarea id="input-front" class="form-textarea" rows="3" required></textarea>
+                </label>
+
+                <label class="form-field">
+                    <span class="form-label">뒷면 (답)</span>
+                    <textarea id="input-back" class="form-textarea" rows="3" required></textarea>
+                </label>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </form>
         </section>
 
         <section id="view-study" hidden>
