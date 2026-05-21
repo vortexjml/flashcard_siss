@@ -34,6 +34,7 @@
             <div id="card-list" class="card-list"></div>
 
             <button id="btn-add-card" class="fab" aria-label="카드 추가">+</button>
+            <button id="btn-start-study" class="btn btn-primary btn-large">학습 시작</button>
         </section>
 
         <section id="view-card-edit" hidden>
@@ -53,21 +54,61 @@
                     <textarea id="input-back" class="form-textarea" rows="3" required></textarea>
                 </label>
 
-               <div class="form-actions">
-  <button type="button" id="btn-delete-card" class="btn btn-danger" hidden>
-    삭제
-  </button>
-  <button type="submit" class="btn btn-primary">저장</button>
-</div>
+                <div class="form-actions">
+                    <button type="button" id="btn-delete-card" class="btn btn-danger" hidden>
+                        삭제
+                    </button>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
             </form>
         </section>
 
         <section id="view-study" hidden>
-            <h2>학습 모드</h2>
+            <div class="study-header">
+                <button id="btn-end-study" class="icon-button" aria-label="학습 종료">✕</button>
+                <div class="study-progress">
+                    <span id="study-counter">0 / 0</span>
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="study-card" class="study-card">
+                <div class="study-card__inner">
+                    <div class="study-card__face study-card__front">
+                        <p id="study-front"></p>
+                    </div>
+                    <div class="study-card__face study-card__back">
+                        <p id="study-back"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="study-actions">
+                <button id="btn-flip" class="btn btn-primary">답 보기</button>
+                <div id="study-answer-buttons" class="study-answer-buttons" hidden>
+                    <button id="btn-incorrect" class="btn btn-danger">모르겠어요</button>
+                    <button id="btn-correct" class="btn btn-primary">알아요</button>
+                </div>
+            </div>
         </section>
 
         <section id="view-result" hidden>
-            <h2>학습 결과</h2>
+            <div class="result-content">
+                <h2 class="result-headline">수고했어요! 🎉</h2>
+                <div class="result-score">
+                    <span id="result-correct">0</span>
+                    <span class="result-divider">/</span>
+                    <span id="result-total">0</span>
+                </div>
+                <p id="result-percentage" class="text-muted"></p>
+
+                <div class="result-actions">
+                    <button id="btn-restart-study" class="btn">처음부터 다시</button>
+                    <button id="btn-back-from-result" class="btn btn-primary">덱으로 돌아가기</button>
+                </div>
+            </div>
         </section>
     </main>
 

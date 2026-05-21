@@ -180,7 +180,7 @@ function showDeckDetail(deckId) {
     document.getElementById("deck-detail-name").textContent = deck.name;
     document.getElementById("deck-detail-info").textContent =
         `${deck.cards.length}장 · ${formatLastReviewed(deck.lastReviewed)}`;
-
+    document.getElementById("btn-start-study").disabled = deck.cards.length === 0;
     renderCardList(deck);
     showView("view-deck");
 }
@@ -306,6 +306,157 @@ function deleteCard() {
 }
 
 // =====================================
+// 유틸: 배열 셔플 (Fisher-Yates 알고리즘)
+// =====================================
+function shuffle(arr) {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+}
+
+// =====================================
+// 학습 모드 상태
+// =====================================
+let studyState = {
+    deckId: null,
+    cards: [],
+    currentIndex: 0,
+    isFlipped: false,
+    correctCount: 0,
+    incorrectCount: 0,
+    answers: [], // {cardId, isCorrect} 기록
+};
+
+// =====================================
+// 학습 시작
+// =====================================
+function startStudy(deckId) {
+    const data = loadData();
+    const deck = data.decks.find((d) => d.id === deckId);
+    if (!deck || deck.cards.length === 0) return;
+
+    studyState = {
+        deckId,
+        cards: shuffle(deck.cards),
+        currentIndex: 0,
+        isFlipped: false,
+        correctCount: 0,
+        incorrectCount: 0,
+        answers: [],
+    };
+
+    renderStudyCard();
+    showView("view-study");
+}
+
+// =====================================
+// 현재 카드 화면에 렌더링
+// =====================================
+function renderStudyCard() {
+    const { cards, currentIndex, isFlipped } = studyState;
+    const card = cards[currentIndex];
+
+    // 진행률 표시
+    document.getElementById("study-counter").textContent =
+        `${currentIndex + 1} / ${cards.length}`;
+    document.getElementById("progress-fill").style.width =
+        `${(currentIndex / cards.length) * 100}%`;
+
+    // 카드 내용
+    document.getElementById("study-front").textContent = card.front;
+    document.getElementById("study-back").textContent = card.back;
+
+    // 플립 상태 반영
+    const cardEl = document.getElementById("study-card");
+    cardEl.classList.toggle("is-flipped", isFlipped);
+
+    // 버튼 표시 분기 (앞면일 땐 "답 보기", 뒷면일 땐 알아요/모르겠어요)
+    document.getElementById("btn-flip").hidden = isFlipped;
+    document.getElementById("study-answer-buttons").hidden = !isFlipped;
+}
+
+// =====================================
+// 카드 뒤집기
+// =====================================
+function flipCard() {
+    if (studyState.isFlipped) return; // 이미 뒤집힌 상태면 무시
+    studyState.isFlipped = true;
+    renderStudyCard();
+}
+
+// =====================================
+// 답변 처리
+// =====================================
+function answerCard(isCorrect) {
+    if (isCorrect) studyState.correctCount++;
+    else studyState.incorrectCount++;
+
+    studyState.answers.push({
+        cardId: studyState.cards[studyState.currentIndex].id,
+        isCorrect,
+    });
+
+    const isLastCard = studyState.currentIndex === studyState.cards.length - 1;
+
+    if (isLastCard) {
+        // 정상 종료: 결과 저장 + 결과 화면
+        persistStudyResults();
+        showResult();
+    } else {
+        // 다음 카드로
+        studyState.currentIndex++;
+        studyState.isFlipped = false;
+        renderStudyCard();
+    }
+}
+
+// =====================================
+// 학습 결과를 카드 데이터에 반영 (정상 종료 시에만)
+// =====================================
+function persistStudyResults() {
+    const data = loadData();
+    const deck = data.decks.find((d) => d.id === studyState.deckId);
+    if (!deck) return;
+
+    studyState.answers.forEach(({ cardId, isCorrect }) => {
+        const card = deck.cards.find((c) => c.id === cardId);
+        if (!card) return;
+        if (isCorrect) card.correctCount++;
+        else card.incorrectCount++;
+    });
+
+    deck.lastReviewed = Date.now();
+    saveData(data);
+}
+
+// =====================================
+// 결과 화면 표시
+// =====================================
+function showResult() {
+    const { correctCount, cards } = studyState;
+    const total = cards.length;
+    const percentage = Math.round((correctCount / total) * 100);
+
+    document.getElementById("result-correct").textContent = correctCount;
+    document.getElementById("result-total").textContent = total;
+    document.getElementById("result-percentage").textContent =
+        `정답률 ${percentage}%`;
+
+    showView("view-result");
+}
+
+// =====================================
+// 중도 종료 (✕ 버튼)
+// =====================================
+function endStudyEarly() {
+    if (!confirm("학습을 종료할까요? 진행 내역은 저장되지 않아요.")) return;
+    showDeckDetail(studyState.deckId);
+}
+
+// =====================================
 // 이벤트 바인딩
 // =====================================
 // FAB → 새 덱 만들기
@@ -345,6 +496,32 @@ document.getElementById("card-list").addEventListener("click", (e) => {
 // 카드 삭제 버튼
 document.getElementById("btn-delete-card")
     .addEventListener("click", deleteCard);
+
+// 학습 시작 버튼
+document.getElementById("btn-start-study")
+    .addEventListener("click", () => startStudy(currentDeckId));
+
+// 카드 클릭 또는 "답 보기" 버튼 → 뒤집기
+document.getElementById("study-card")
+    .addEventListener("click", flipCard);
+document.getElementById("btn-flip")
+    .addEventListener("click", flipCard);
+
+// 알아요 / 모르겠어요
+document.getElementById("btn-correct")
+    .addEventListener("click", () => answerCard(true));
+document.getElementById("btn-incorrect")
+    .addEventListener("click", () => answerCard(false));
+
+// 중도 종료
+document.getElementById("btn-end-study")
+    .addEventListener("click", endStudyEarly);
+
+// 결과 화면의 다시/돌아가기 버튼
+document.getElementById("btn-restart-study")
+    .addEventListener("click", () => startStudy(studyState.deckId));
+document.getElementById("btn-back-from-result")
+    .addEventListener("click", () => showDeckDetail(studyState.deckId));
 
 // =====================================
 // 앱 초기화

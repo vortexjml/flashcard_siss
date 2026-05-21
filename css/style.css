@@ -1,314 +1,466 @@
 /* ===== 디자인 토큰 (Light 모드 기본값) ===== */
 :root {
-  /* 색상 */
-  --color-bg: #ffffff;
-  --color-bg-elevated: #f7f7f8;
-  --color-text: #1a1a1a;
-  --color-text-muted: #6b7280;
-  --color-border: #e5e7eb;
-  --color-accent: #3b82f6;
-  --color-accent-hover: #2563eb;
-  --color-danger: #ef4444;
+    /* 색상 */
+    --color-bg: #ffffff;
+    --color-bg-elevated: #f7f7f8;
+    --color-text: #1a1a1a;
+    --color-text-muted: #6b7280;
+    --color-border: #e5e7eb;
+    --color-accent: #3b82f6;
+    --color-accent-hover: #2563eb;
+    --color-danger: #ef4444;
 
-  /* 둥근 모서리 */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+    /* 둥근 모서리 */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
 
-  /* 간격 */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
+    /* 간격 */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
 
-  /* 폰트 */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               "Noto Sans KR", sans-serif;
+    /* 폰트 */
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Noto Sans KR", sans-serif;
 
-  /* 전환 효과 */
-  --transition: 0.2s ease;
+    /* 전환 효과 */
+    --transition: 0.2s ease;
 }
 
 /* ===== Dark 모드 오버라이드 ===== */
 [data-theme="dark"] {
-  --color-bg: #0f0f10;
-  --color-bg-elevated: #1c1c1f;
-  --color-text: #f5f5f5;
-  --color-text-muted: #9ca3af;
-  --color-border: #2a2a2e;
-  --color-accent: #60a5fa;
-  --color-accent-hover: #93c5fd;
-  --color-danger: #f87171;
+    --color-bg: #0f0f10;
+    --color-bg-elevated: #1c1c1f;
+    --color-text: #f5f5f5;
+    --color-text-muted: #9ca3af;
+    --color-border: #2a2a2e;
+    --color-accent: #60a5fa;
+    --color-accent-hover: #93c5fd;
+    --color-danger: #f87171;
 }
 
 /* ===== 리셋 & 기본 ===== */
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: var(--font-sans);
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: background-color var(--transition),
-              color var(--transition);
+    margin: 0;
+    font-family: var(--font-sans);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color var(--transition),
+        color var(--transition);
 }
 
 /* ===== 레이아웃 ===== */
 .app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-4) var(--space-5);
-  border-bottom: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .app-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
 }
 
 .app-main {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: var(--space-5);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-5);
 }
 
 /* ===== 공통 컴포넌트 ===== */
 .icon-button {
-  background: none;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  font-size: 18px;
-  padding: var(--space-2) var(--space-3);
-  cursor: pointer;
-  color: var(--color-text);
-  transition: background-color var(--transition);
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 18px;
+    padding: var(--space-2) var(--space-3);
+    cursor: pointer;
+    color: var(--color-text);
+    transition: background-color var(--transition);
 }
 
 .icon-button:hover {
-  background-color: var(--color-bg-elevated);
+    background-color: var(--color-bg-elevated);
 }
 
 /* ===== 화면 공통 헤더 ===== */
 .view-header {
-  margin-bottom: var(--space-5);
+    margin-bottom: var(--space-5);
 }
 
 .view-header h2 {
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
 }
 
 /* ===== 덱 리스트 (그리드) ===== */
 .deck-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-4);
 }
 
 /* ===== 덱 카드 ===== */
 .deck-card {
-  background-color: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
-  cursor: pointer;
-  transition: transform var(--transition),
-              border-color var(--transition);
+    background-color: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    cursor: pointer;
+    transition: transform var(--transition),
+        border-color var(--transition);
 }
 
 .deck-card:hover {
-  border-color: var(--color-accent);
-  transform: translateY(-2px);
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
 }
 
 .deck-card__name {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 var(--space-2);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 var(--space-2);
 }
 
 .deck-card__meta {
-  font-size: 14px;
-  color: var(--color-text-muted);
-  margin: 0;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    margin: 0;
 }
 
 /* ===== 빈 상태 ===== */
 .empty-state {
-  text-align: center;
-  padding: var(--space-7);
-  color: var(--color-text-muted);
+    text-align: center;
+    padding: var(--space-7);
+    color: var(--color-text-muted);
 }
 
 /* ===== view-header를 flex로 (뒤로가기 버튼 정렬용) ===== */
 .view-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
 }
 
 /* ===== FAB (플로팅 + 버튼) ===== */
 .fab {
-  position: fixed;
-  bottom: var(--space-6);
-  right: var(--space-6);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background-color: var(--color-accent);
-  color: white;
-  border: none;
-  font-size: 28px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color var(--transition),
-              transform var(--transition);
+    position: fixed;
+    bottom: var(--space-6);
+    right: var(--space-6);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    color: white;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color var(--transition),
+        transform var(--transition);
 }
 
 .fab:hover {
-  background-color: var(--color-accent-hover);
-  transform: scale(1.05);
+    background-color: var(--color-accent-hover);
+    transform: scale(1.05);
 }
 
 /* ===== 보조 텍스트 ===== */
 .text-muted {
-  color: var(--color-text-muted);
-  font-size: 14px;
+    color: var(--color-text-muted);
+    font-size: 14px;
 }
 
 /* ===== 카드 리스트 ===== */
 .card-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  margin-top: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
 }
 
 .card-list-item {
-  background-color: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  cursor: pointer;
-  transition: border-color var(--transition);
+    background-color: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    cursor: pointer;
+    transition: border-color var(--transition);
 }
 
 .card-list-item:hover {
-  border-color: var(--color-accent);
+    border-color: var(--color-accent);
 }
 
 .card-list-item__front {
-  font-weight: 500;
-  margin: 0 0 var(--space-1);
-  /* 한 줄로 자르기 */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-weight: 500;
+    margin: 0 0 var(--space-1);
+    /* 한 줄로 자르기 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-list-item__back {
-  font-size: 14px;
-  color: var(--color-text-muted);
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ===== 폼 ===== */
 .card-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  margin-top: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
 }
 
 .form-field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
 }
 
 .form-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-muted);
 }
 
 .form-textarea {
-  background-color: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-3);
-  font-family: inherit;
-  font-size: 16px;
-  color: var(--color-text);
-  resize: vertical;
-  min-height: 80px;
-  transition: border-color var(--transition);
+    background-color: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    font-family: inherit;
+    font-size: 16px;
+    color: var(--color-text);
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color var(--transition);
 }
 
 .form-textarea:focus {
-  outline: none;
-  border-color: var(--color-accent);
+    outline: none;
+    border-color: var(--color-accent);
 }
 
 .form-actions {
-  display: flex;
-  gap: var(--space-3);
-  margin-top: var(--space-2);
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
 }
 
 /* 저장 버튼은 항상 오른쪽 끝에 배치 */
-.form-actions > button[type="submit"] {
-  margin-left: auto;
+.form-actions>button[type="submit"] {
+    margin-left: auto;
 }
 
 /* ===== 일반 버튼 ===== */
 .btn {
-  border: 1px solid var(--color-border);
-  background-color: var(--color-bg-elevated);
-  color: var(--color-text);
-  padding: var(--space-3) var(--space-5);
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color var(--transition);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg-elevated);
+    color: var(--color-text);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transition);
 }
 
 .btn:hover {
-  background-color: var(--color-border);
+    background-color: var(--color-border);
 }
 
 .btn-primary {
-  background-color: var(--color-accent);
-  border-color: var(--color-accent);
-  color: white;
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
 }
 
 .btn-primary:hover {
-  background-color: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
+    background-color: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
 }
 
 /* ===== 위험 버튼 (삭제 등) ===== */
 .btn-danger {
-  background-color: transparent;
-  border-color: var(--color-danger);
-  color: var(--color-danger);
+    background-color: transparent;
+    border-color: var(--color-danger);
+    color: var(--color-danger);
 }
 
 .btn-danger:hover {
-  background-color: var(--color-danger);
-  border-color: var(--color-danger);
-  color: white;
+    background-color: var(--color-danger);
+    border-color: var(--color-danger);
+    color: white;
+}
+
+/* ===== 큰 버튼 (학습 시작 등) ===== */
+.btn-large {
+    display: block;
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
+    font-size: 16px;
+    margin: var(--space-5) 0;
+}
+
+.btn-large:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ===== 학습 모드 헤더 (진행률) ===== */
+.study-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.study-progress {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+#study-counter {
+    font-size: 14px;
+    color: var(--color-text-muted);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background-color: var(--color-bg-elevated);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--color-accent);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* ===== 학습 카드 (3D 플립) ===== */
+.study-card {
+    perspective: 1000px;
+    margin-bottom: var(--space-6);
+    cursor: pointer;
+}
+
+.study-card__inner {
+    position: relative;
+    width: 100%;
+    min-height: 280px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.study-card.is-flipped .study-card__inner {
+    transform: rotateY(180deg);
+}
+
+.study-card__face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-6);
+    background-color: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    font-size: 20px;
+    text-align: center;
+    word-break: keep-all;
+}
+
+.study-card__back {
+    transform: rotateY(180deg);
+}
+
+/* ===== 학습 액션 버튼 ===== */
+.study-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.study-actions .btn {
+    width: 100%;
+    padding: var(--space-4);
+    font-size: 16px;
+}
+
+.study-answer-buttons {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.study-answer-buttons .btn {
+    flex: 1;
+}
+
+/* ===== 학습 결과 ===== */
+.result-content {
+    text-align: center;
+    padding: var(--space-7) 0;
+}
+
+.result-headline {
+    font-size: 28px;
+    margin: 0 0 var(--space-5);
+}
+
+.result-score {
+    font-size: 48px;
+    font-weight: 700;
+    margin: var(--space-5) 0 var(--space-3);
+}
+
+.result-divider {
+    margin: 0 var(--space-3);
+    color: var(--color-text-muted);
+}
+
+#result-percentage {
+    font-size: 16px;
+    margin-bottom: var(--space-7);
+}
+
+.result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.result-actions .btn {
+    width: 100%;
+    padding: var(--space-4);
+    font-size: 16px;
 }
