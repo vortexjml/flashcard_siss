@@ -477,3 +477,62 @@ body {
   color: var(--color-text-muted);
   margin: var(--space-2) 0 0;
 }
+
+/* =====================================
+   모바일 대응 (640px 이하)
+   ===================================== */
+@media (max-width: 640px) {
+  /* 전체 패딩 줄이기 */
+  .app-main {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .app-header {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  /* 헤더 텍스트 크기 */
+  .app-title {
+    font-size: 18px;
+  }
+
+  .view-header h2 {
+    font-size: 20px;
+  }
+
+  /* 덱 카드를 단일 컬럼으로 */
+  .deck-list {
+    grid-template-columns: 1fr;
+  }
+
+  /* FAB을 모서리에서 약간 떨어뜨림 */
+  .fab {
+    bottom: var(--space-5);
+    right: var(--space-5);
+  }
+
+  /* 학습 카드 크기 조정 */
+  .study-card__inner {
+    min-height: 240px;
+  }
+
+  .study-card__face {
+    font-size: 18px;
+    padding: var(--space-5);
+  }
+
+  /* 결과 화면 텍스트 축소 */
+  .result-headline {
+    font-size: 22px;
+  }
+
+  .result-score {
+    font-size: 40px;
+  }
+
+  /* 터치 영역 확보 (모바일에선 아이콘 버튼이 너무 작으면 누르기 어려움) */
+  .icon-button {
+    padding: var(--space-3);
+    min-width: 40px;
+  }
+}
