@@ -147,3 +147,39 @@ body {
   padding: var(--space-7);
   color: var(--color-text-muted);
 }
+
+/* ===== view-header를 flex로 (뒤로가기 버튼 정렬용) ===== */
+.view-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ===== FAB (플로팅 + 버튼) ===== */
+.fab {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color var(--transition),
+              transform var(--transition);
+}
+
+.fab:hover {
+  background-color: var(--color-accent-hover);
+  transform: scale(1.05);
+}
+
+/* ===== 보조 텍스트 ===== */
+.text-muted {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}

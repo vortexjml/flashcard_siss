@@ -17,16 +17,19 @@
     <main class="app-main">
         <section id="view-home">
 
-            //화면 상단 제목 영역
             <div class="view-header">
                 <h2>내 덱</h2>
             </div>
-            //덱카드 들어갈 빈 컨테이너
             <div id="deck-list" class="deck-list"></div>
+            <button id="btn-new-deck" class="fab" aria-label="새 덱 만들기">+</button>
         </section>
 
         <section id="view-deck" hidden>
-            <h2>덱 상세</h2>
+            <div class="view-header">
+                <button id="btn-back-to-home" class="icon-button" aria-label="뒤로">←</button>
+                <h2 id="deck-detail-name"></h2>
+            </div>
+            <p id="deck-detail-info" class="text-muted"></p>
         </section>
 
         <section id="view-card-edit" hidden>
