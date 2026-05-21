@@ -7,25 +7,32 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <section id="view-home">
-    <h1>홈 화면</h1>
-  </section>
+  <header class="app-header">
+    <h1 class="app-title">Flashcards</h1>
+    <button id="theme-toggle" class="icon-button" aria-label="테마 전환">🌙</button>
+  </header>
 
-  <section id="view-deck" hidden>
-    <h1>덱 상세</h1>
-  </section>
+  <main class="app-main">
+    <section id="view-home">
+      <h2>홈 화면</h2>
+    </section>
 
-  <section id="view-card-edit" hidden>
-    <h1>카드 편집</h1>
-  </section>
+    <section id="view-deck" hidden>
+      <h2>덱 상세</h2>
+    </section>
 
-  <section id="view-study" hidden>
-    <h1>학습 모드</h1>
-  </section>
+    <section id="view-card-edit" hidden>
+      <h2>카드 편집</h2>
+    </section>
 
-  <section id="view-result" hidden>
-    <h1>학습 결과</h1>
-  </section>
+    <section id="view-study" hidden>
+      <h2>학습 모드</h2>
+    </section>
+
+    <section id="view-result" hidden>
+      <h2>학습 결과</h2>
+    </section>
+  </main>
 
   <script src="js/main.js"></script>
 </body>
