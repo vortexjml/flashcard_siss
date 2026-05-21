@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="ko" data-theme="light">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flashcards</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-  <header class="app-header">
-    <h1 class="app-title">Flashcards</h1>
-    <button id="theme-toggle" class="icon-button" aria-label="테마 전환">🌙</button>
-  </header>
+    <header class="app-header">
+        <h1 class="app-title">Flashcards</h1>
+        <button id="theme-toggle" class="icon-button" aria-label="테마 전환">🌙</button>
+    </header>
 
-  <main class="app-main">
-    <section id="view-home">
-      <h2>홈 화면</h2>
-    </section>
+    <main class="app-main">
+        <section id="view-home">
 
-    <section id="view-deck" hidden>
-      <h2>덱 상세</h2>
-    </section>
+            //화면 상단 제목 영역
+            <div class="view-header">
+                <h2>내 덱</h2>
+            </div>
+            //덱카드 들어갈 빈 컨테이너
+            <div id="deck-list" class="deck-list"></div>
+        </section>
 
-    <section id="view-card-edit" hidden>
-      <h2>카드 편집</h2>
-    </section>
+        <section id="view-deck" hidden>
+            <h2>덱 상세</h2>
+        </section>
 
-    <section id="view-study" hidden>
-      <h2>학습 모드</h2>
-    </section>
+        <section id="view-card-edit" hidden>
+            <h2>카드 편집</h2>
+        </section>
 
-    <section id="view-result" hidden>
-      <h2>학습 결과</h2>
-    </section>
-  </main>
+        <section id="view-study" hidden>
+            <h2>학습 모드</h2>
+        </section>
 
-  <script src="js/main.js"></script>
+        <section id="view-result" hidden>
+            <h2>학습 결과</h2>
+        </section>
+    </main>
+
+    <script src="js/main.js"></script>
 </body>
+
 </html>

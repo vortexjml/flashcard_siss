@@ -94,3 +94,56 @@ body {
 .icon-button:hover {
   background-color: var(--color-bg-elevated);
 }
+
+/* ===== 화면 공통 헤더 ===== */
+.view-header {
+  margin-bottom: var(--space-5);
+}
+
+.view-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ===== 덱 리스트 (그리드) ===== */
+.deck-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ===== 덱 카드 ===== */
+.deck-card {
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  cursor: pointer;
+  transition: transform var(--transition),
+              border-color var(--transition);
+}
+
+.deck-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.deck-card__name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 var(--space-2);
+}
+
+.deck-card__meta {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ===== 빈 상태 ===== */
+.empty-state {
+  text-align: center;
+  padding: var(--space-7);
+  color: var(--color-text-muted);
+}
